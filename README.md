@@ -14,6 +14,14 @@ dotnet run
 
 In VS Code, run **Tasks: Run Build Task** to build, **Tasks: Run Task** → **run** to build and launch the app, or start debugging the **SLAK-U-Track** launch configuration.
 
+## Tests
+
+Run the unit tests from the project directory:
+
+```sh
+dotnet test tests/SlackYouTrack.CrossPlatform.Tests/SlackYouTrack.CrossPlatform.Tests.csproj
+```
+
 ## Build packages
 
 The GitHub Actions workflow builds self-contained Release packages for Windows, macOS, and Linux on x64 and ARM64. Packages are uploaded as workflow artifacts for pushes to `main` and pull requests targeting `main`. To publish downloadable assets, push a version tag such as `v1.0.0`; the workflow creates a GitHub Release containing each platform archive.

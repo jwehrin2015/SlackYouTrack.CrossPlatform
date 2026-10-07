@@ -11,9 +11,25 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Run tests
+        run: dotnet test tests/SlackYouTrack.CrossPlatform.Tests/SlackYouTrack.CrossPlatform.Tests.csproj --configuration Release
+
   build:
     name: Package ${{ matrix.rid }}
     runs-on: ${{ matrix.runner }}
+    needs: test
     strategy:
       fail-fast: false
       matrix:
