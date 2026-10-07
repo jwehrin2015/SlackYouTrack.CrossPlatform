@@ -14,6 +14,12 @@ dotnet run
 
 In VS Code, run **Tasks: Run Build Task** to build, **Tasks: Run Task** → **run** to build and launch the app, or start debugging the **SLAK-U-Track** launch configuration.
 
+## Build packages
+
+The GitHub Actions workflow builds self-contained Release packages for Windows, macOS, and Linux on x64 and ARM64. Packages are uploaded as workflow artifacts for pushes to `main` and pull requests targeting `main`. To publish downloadable assets, push a version tag such as `v1.0.0`; the workflow creates a GitHub Release containing each platform archive.
+
+Windows packages are `.zip` archives; macOS and Linux packages are `.tar.gz` archives. Extract the archive and run the included application for that platform.
+
 ## Features
 
 - Generate attendance reports by professor, course, and class date.
