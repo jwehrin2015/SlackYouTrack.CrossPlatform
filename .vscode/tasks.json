@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/SlackYouTrack.CrossPlatform.csproj",
+        "--configuration",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "run",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/SlackYouTrack.CrossPlatform.csproj",
+        "--no-build",
+        "--configuration",
+        "Debug"
+      ],
+      "dependsOn": "build",
+      "dependsOrder": "sequence",
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

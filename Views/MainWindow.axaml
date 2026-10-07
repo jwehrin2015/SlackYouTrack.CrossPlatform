@@ -1,0 +1,194 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:model="using:SlackYouTrack.CrossPlatform.Models"
+        x:Class="SlackYouTrack.CrossPlatform.Views.MainWindow"
+        Title="SLAK-U-Track"
+        Width="1180"
+        Height="820"
+        MinWidth="900"
+        MinHeight="650">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="24" RowSpacing="16">
+        <StackPanel Grid.Row="0" Spacing="4">
+            <TextBlock Text="SLAK-U-Track" FontSize="28" FontWeight="Bold" />
+            <TextBlock Text="Class scheduling and attendance reports" Opacity="0.7" />
+        </StackPanel>
+
+        <TabControl x:Name="MainTabs"
+                    Grid.Row="1"
+                    SelectionChanged="MainTabs_SelectionChanged">
+            <TabItem Header="Attendance report">
+                <ScrollViewer>
+                    <StackPanel Margin="18" Spacing="16">
+                        <TextBlock Text="Generate an attendance report"
+                                   FontSize="20"
+                                   FontWeight="SemiBold" />
+                        <Grid ColumnDefinitions="*,*,*,Auto" ColumnSpacing="12">
+                            <StackPanel Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Professor" />
+                                <ComboBox x:Name="ReportInstructorCombo"
+                                          SelectionChanged="ReportInstructor_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:LookupOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="6">
+                                <TextBlock Text="Course" />
+                                <ComboBox x:Name="ReportCourseCombo"
+                                          IsEnabled="False"
+                                          SelectionChanged="ReportCourse_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:LookupOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="6">
+                                <TextBlock Text="Class date" />
+                                <ComboBox x:Name="ReportClassCombo"
+                                          IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:ClassDateOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <Button Grid.Column="3"
+                                    Content="Generate report"
+                                    VerticalAlignment="Bottom"
+                                    Click="GenerateReport_Click" />
+                        </Grid>
+
+                        <Border Padding="16" CornerRadius="8" Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+                            <Grid ColumnDefinitions="Auto,*,Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="6">
+                                <TextBlock Text="Course:" FontWeight="SemiBold" />
+                                <TextBlock x:Name="ReportCourseText" Grid.Column="1" />
+                                <TextBlock Text="Professor:" Grid.Row="1" FontWeight="SemiBold" />
+                                <TextBlock x:Name="ReportProfessorText" Grid.Row="1" Grid.Column="1" />
+                                <TextBlock Text="Course ID:" Grid.Column="2" FontWeight="SemiBold" />
+                                <TextBlock x:Name="ReportCourseIdText" Grid.Column="3" />
+                                <TextBlock Text="Class date:" Grid.Row="1" Grid.Column="2" FontWeight="SemiBold" />
+                                <TextBlock x:Name="ReportDateText" Grid.Row="1" Grid.Column="3" />
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="ReportGrid"
+                                  Height="390"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserSortColumns="True"
+                                  GridLinesVisibility="All">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Student" Binding="{ReflectionBinding Name}" Width="2*" />
+                                <DataGridTextColumn Header="Attended" Binding="{ReflectionBinding Attended}" Width="*" />
+                                <DataGridTextColumn Header="Time in" Binding="{ReflectionBinding TimeIn}" Width="*" />
+                                <DataGridTextColumn Header="Last date attended" Binding="{ReflectionBinding LastDateAttended}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Button Content="Save CSV" Click="SaveCsv_Click" />
+                            <Button Content="Print report" Click="PrintReport_Click" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Add class">
+                <ScrollViewer>
+                    <StackPanel Margin="18" Spacing="16" MaxWidth="850" HorizontalAlignment="Left">
+                        <TextBlock Text="Schedule recurring classes"
+                                   FontSize="20"
+                                   FontWeight="SemiBold" />
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="18" RowSpacing="14">
+                            <StackPanel Grid.Row="0" Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Professor" />
+                                <ComboBox x:Name="AddInstructorCombo"
+                                          SelectionChanged="AddInstructor_SelectionChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:LookupOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Spacing="6">
+                                <TextBlock Text="Class room" />
+                                <ComboBox x:Name="LocationCombo">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:LookupOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Course" />
+                                <ComboBox x:Name="AddCourseCombo" IsEnabled="False">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="model:LookupOption">
+                                            <TextBlock Text="{Binding Label}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Spacing="6">
+                                <TextBlock Text="Days of week" />
+                                <WrapPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="MondayCheck" Content="Monday" Margin="0,0,14,6" />
+                                    <CheckBox x:Name="TuesdayCheck" Content="Tuesday" Margin="0,0,14,6" />
+                                    <CheckBox x:Name="WednesdayCheck" Content="Wednesday" Margin="0,0,14,6" />
+                                    <CheckBox x:Name="ThursdayCheck" Content="Thursday" Margin="0,0,14,6" />
+                                    <CheckBox x:Name="FridayCheck" Content="Friday" Margin="0,0,14,6" />
+                                </WrapPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Start time" />
+                                <TimePicker x:Name="StartTimePicker" ClockIdentifier="12HourClock" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Spacing="6">
+                                <TextBlock Text="End time" />
+                                <TimePicker x:Name="EndTimePicker" ClockIdentifier="12HourClock" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Start date" />
+                                <DatePicker x:Name="StartDatePicker" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="1" Spacing="6">
+                                <TextBlock Text="End date" />
+                                <DatePicker x:Name="EndDatePicker" />
+                            </StackPanel>
+                        </Grid>
+                        <Button Content="Add classes" HorizontalAlignment="Left" Click="AddClasses_Click" />
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <ScrollViewer>
+                    <StackPanel Margin="18" Spacing="14" MaxWidth="520" HorizontalAlignment="Left">
+                        <TextBlock Text="Local database"
+                                   FontSize="20"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="The app stores its SQLite database in your user application-data directory. Schema updates are applied automatically when the app starts."
+                                   TextWrapping="Wrap"
+                                   Opacity="0.7" />
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="Database file" />
+                            <TextBlock x:Name="DatabasePathTextBlock" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="2"
+                   MinHeight="22"
+                   TextWrapping="Wrap" />
+    </Grid>
+</Window>

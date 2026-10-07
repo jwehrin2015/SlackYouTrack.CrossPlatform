@@ -1,0 +1,22 @@
+# Build output
+bin/
+obj/
+
+# IDE and editor files
+.vs/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.user
+*.suo
+
+# Local databases and logs
+*.db
+*.db-shm
+*.db-wal
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
